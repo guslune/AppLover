@@ -30,8 +30,6 @@ var app = angular.module('starter', ['ionic', 'firebase'])
   });
 })
 
-//.constant('FURL', 'https://my-first-app-8ad0f.firebaseio.com')
-
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
@@ -51,7 +49,21 @@ var app = angular.module('starter', ['ionic', 'firebase'])
     url: '/profile',
     views: {
       'menuContent': {
-        templateUrl: 'templates/profile.html'
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl as prof',
+        resolve: {
+          auth: function($state, Auth) {
+            return Auth.requireAuth().catch(function() {
+              $state.go('login');
+            });
+          },
+
+          profile: function(Auth) {
+            return Auth.requireAuth().then(function(auth) {
+              return Auth.getProfile(auth.uid).$loaded();
+            });
+          }
+        }
       }
     }
   })
@@ -73,7 +85,7 @@ var app = angular.module('starter', ['ionic', 'firebase'])
       }
     }
   });
-  
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 });
