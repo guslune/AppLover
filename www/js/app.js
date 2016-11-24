@@ -10,7 +10,7 @@ var config = {
     databaseURL: "https://my-first-app-8ad0f.firebaseio.com",
     storageBucket: "my-first-app-8ad0f.appspot.com"
   };
-  firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 var app = angular.module('starter', ['ionic', 'firebase'])
 
