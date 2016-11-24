@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('AuthCtrl', function(Auth, $state) {
+app.controller('AuthCtrl', function(Auth) {
 
     var auth = this;
 
@@ -8,7 +8,7 @@ app.controller('AuthCtrl', function(Auth, $state) {
         console.log('Login clicked');
 
         return Auth.login().then(function(result) {
-            $state.go('app.home');
+            console.log(result.user);
         });
 
     };
