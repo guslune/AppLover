@@ -15,7 +15,10 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $state, $http, $q) 
         },
 
         login: function() {
-            return auth.$signInWithPopup('facebook')
+            var provider = new firebase.auth.FacebookAuthProvider();
+            provider.addScope('public_profile, email, user_location, user_birthday, user_photos, user_about_me');
+
+            return auth.$signInWithPopup(provider)
                 .then(function(result) {
                     var accessToken = result.credential.accessToken;
                     var user = Auth.getProfile(result.user.uid).$loaded();
@@ -26,7 +29,7 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $state, $http, $q) 
                             var genderPromise = $http.get('https://graph.facebook.com/me?fields=gender&access_token=' + accessToken);
                             var birthdayPromise = $http.get('https://graph.facebook.com/me?fields=birthday&access_token=' + accessToken);
                             var locationPromise = $http.get('https://graph.facebook.com/me?fields=location&access_token=' + accessToken);
-                            var bioPromise = $http.get('https://graph.facebook.com/me?fields=bio&access_token=' + accessToken);
+                            var bioPromise = $http.get('https://graph.facebook.com/me?fields=about&access_token=' + accessToken);
                             var imagesPromise = $http.get('https://graph.facebook.com/me/photos/uploaded?fields=source&access_token=' + accessToken);
                             var promises = [genderPromise, birthdayPromise, locationPromise, bioPromise, imagesPromise];
 
@@ -36,11 +39,11 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $state, $http, $q) 
                                     name: info.displayName,
                                     email: info.email,
                                     avatar: info.photoURL,
-                                    gender: data[0].data.gender,
-                                    birthday: data[1].data.birthday,
-                                    age: Auth.getAge(data[1].data.birthday),
-                                    location: data[2].data.location.name,
-                                    bio: data[3].data.bio,
+                                    gender: data[0].data.gender ? data[0].data.gender : "",
+                                    birthday: data[1].data.birthday ? data[1].data.birthday : "",
+                                    age: data[1].data.birthday ? Auth.getAge(data[1].data.birthday) : "",
+                                    location: data[2].data.location ?  data[2].data.location.name : "",
+                                    bio: data[3].data.about ? data[3].data.about : "",
                                     images: data[4].data.data
                                 }
                                 Auth.createProfile(result.user.uid, profile);

@@ -81,7 +81,15 @@ var app = angular.module('starter', ['ionic', 'firebase'])
     url: '/settings',
     views: {
       'menuContent': {
-        templateUrl: 'templates/settings.html'
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingCtrl as sett',
+        resolve: {
+          auth: function($state, Auth) {
+            return Auth.requireAuth().catch(function() {
+              $state.go('login');
+            });
+          }
+        }
       }
     }
   });
