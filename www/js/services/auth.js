@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('Auth', function($firebaseAuth, $firebaseObject, $state, $http, $q) {
+app.factory('Auth', function($firebaseAuth, $firebaseObject, $firebaseArray, $state, $http, $q) {
     var ref = firebase.database().ref();
     var auth = $firebaseAuth();
 
@@ -63,9 +63,19 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $state, $http, $q) 
 
         requireAuth: function() {
             return auth.$requireSignIn();
+        },
+
+        getProfiles: function(){
+            return $firebaseArray(ref.child('profiles')); 
+        },
+
+        getProfilesByAge: function(age) {
+            return $firebaseArray(ref.child('profiles').orderByChild('age').startAt(18).endAt(age));
+            
         }
 
     };
+
 
     auth.$onAuthStateChanged(function(authData) {
         if(authData) {

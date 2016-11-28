@@ -12,7 +12,7 @@ var config = {
   };
   firebase.initializeApp(config);
 
-var app = angular.module('starter', ['ionic', 'firebase'])
+var app = angular.module('starter', ['ionic', 'firebase', 'ionic.contrib.ui.tinderCards'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -72,9 +72,24 @@ var app = angular.module('starter', ['ionic', 'firebase'])
     url: '/home',
     views: {
       'menuContent': {
-        templateUrl: 'templates/home.html'
+        templateUrl: 'templates/home.html',
+        controller: 'HomeCtrl as home', 
+        resolve: {
+          auth: function($state, Auth) {
+            return Auth.requireAuth().catch(function() {
+              $state.go('login');
+            });
+          },
+
+          uid: function(Auth) {
+            return Auth.requireAuth()
+              .then(function(auth) {
+                return auth.uid;
+              });
+          }
       }
     }
+  }
   })
 
   .state('app.settings', {
