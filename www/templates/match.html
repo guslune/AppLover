@@ -1,0 +1,14 @@
+<ion-view view-tittle="Matches">
+	<ion-content>
+
+		<ion-list>
+			<ion-item class="item item-avatar" ng-repeat="item in matc.list">
+			 <img ng-src="{{item.avatar}}">
+			 <h2>{{item.name}}, {{item.age}}</h2>
+			 <p><i class="ion-location"></i> {{item.location}}</p>
+			 </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
+
+
