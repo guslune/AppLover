@@ -20,7 +20,9 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $firebaseArray, $st
 
             return auth.$signInWithPopup(provider)
                 .then(function(result) {
+                    console.log(result);
                     var accessToken = result.credential.accessToken;
+                    console.log(accessToken);
                     var user = Auth.getProfile(result.user.uid).$loaded();
 
                     user.then(function(profile) {
@@ -31,6 +33,7 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $firebaseArray, $st
                             var locationPromise = $http.get('https://graph.facebook.com/me?fields=location&access_token=' + accessToken);
                             var bioPromise = $http.get('https://graph.facebook.com/me?fields=about&access_token=' + accessToken);
                             var imagesPromise = $http.get('https://graph.facebook.com/me/photos/uploaded?fields=source&access_token=' + accessToken);
+
                             var promises = [genderPromise, birthdayPromise, locationPromise, bioPromise, imagesPromise];
 
                             $q.all(promises).then(function(data) {
@@ -46,6 +49,7 @@ app.factory('Auth', function($firebaseAuth, $firebaseObject, $firebaseArray, $st
                                     bio: data[3].data.about ? data[3].data.about : "",
                                     images: data[4].data.data
                                 }
+                                console.log(profile);
                                 Auth.createProfile(result.user.uid, profile);
                             });
                         }

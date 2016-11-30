@@ -5,10 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 var config = {
-    apiKey: "AIzaSyCywCesUp0l-4oQPvti-GhrJbGgd0304GA",
-    authDomain: "my-first-app-8ad0f.firebaseapp.com",
-    databaseURL: "https://my-first-app-8ad0f.firebaseio.com",
-    storageBucket: "my-first-app-8ad0f.appspot.com"
+    apiKey: "AIzaSyD_c5gh74exD_WjZE23YbKsCn0K5vzBMCQ",
+    authDomain: "testapp-b8861.firebaseapp.com",
+    databaseURL: "https://testapp-b8861.firebaseio.com",
+    storageBucket: "testapp-b8861.appspot.com",
   };
   firebase.initializeApp(config);
 
