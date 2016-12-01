@@ -120,7 +120,14 @@ var app = angular.module('starter', ['ionic', 'firebase', 'ionic.contrib.ui.tind
               .then(function(auth) {
                 return auth.uid;
               });
-          }
+          },
+          profile: function(Auth){
+      return Auth.requireAuth()
+        .then(function(auth){
+          return Auth.getProfile(auth.uid).$loaded();
+        })
+    }
+
       }
     }
   }
